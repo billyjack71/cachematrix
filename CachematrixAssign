@@ -1,0 +1,50 @@
+## set allows you to set the value of the matrix and initializes the 
+   #varialbe (m) to store the inverse of that matrix to null
+        #for testing, I have used the known invertable matrix of:
+        #set.seed(42)
+        #a<- matrix(sample(1:16,16),4,4)
+##get simply returns the value of the current matrix
+##setinv assigns the inverse of the current matrix to (m)
+##getinv returns the value of (m), which is the inversion of the current matrix
+## NOTE, I SET UP SETINV TO TAKE THE CURRENT WORKING MATRIX NOT A NEW ONE
+makeCacheMatrix <- function(x = matrix()) {
+        
+        m <- NULL
+        set <- function(y) {
+                x <<- y
+                m <<- NULL
+        }
+        get <- function() x
+        
+        setinv <- function() m <<- solve(x)
+                
+        getinv <- function() m
+       
+        list(set = set, get = get,
+             setinv = setinv,
+             getinv = getinv)
+}
+
+
+
+## cacheSolve takes the matrix set in MakeCacheMatrix and
+  #first checks to see if it is not null and if it is,
+  #it returns the cached inverse (m)
+        #if it is null, gets it (x) and then calculates the 
+        #inverse just like setinv
+
+cacheSolve <- function(x, ...) {
+        ## Return a matrix that is the inverse of 'x'
+        
+                m <- x$getinv()
+                if(!is.null(m)) {
+                        message("getting cached data")
+                        return(m)
+                }
+                data <- x$get()
+                m <- solve(data, ...)
+                x$setinv(m)
+                m
+        
+        
+}
